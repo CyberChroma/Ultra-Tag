@@ -1,15 +1,15 @@
 Design new test level (verticality + jumping + walls)
 
-Improve 'it' state change
+make rough minimap
 
 make ui indication of who is it
 make ui bars for both characters that fill
 
 make win/lose condition
 
-make more actions for the player/ai
+make improved minimap
 
-make minimap
+make more actions for the player/ai
 
 make pause menu
 
@@ -21,6 +21,8 @@ make loadout system
 
 replace player and ai with human model
 makes animations
+
+Improve 'it' state change
 
 design level 1
 design level 2

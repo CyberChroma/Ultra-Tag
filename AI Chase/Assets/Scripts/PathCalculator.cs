@@ -11,16 +11,15 @@ public class PathCalculator : MonoBehaviour
 
     private CharacterClosestPathfinding playerCharacterClosestPathfinding;
 
-
     // Start is called before the first frame update
     void Start()
     {
         pathfindingObjects = transform.GetComponentsInChildren<PathfindingObject>();
         playerCharacterClosestPathfinding = FindObjectOfType<PlayerInput>().GetComponentInChildren<CharacterClosestPathfinding>();
-        CalculatePaths();
+        StartCoroutine(CalculatePaths());
     }
 
-    public void CalculatePaths()
+    public IEnumerator CalculatePaths()
     {
         if (Random.Range(0, 2) == 1) {
             pathfindingObjects.Reverse();
@@ -31,7 +30,7 @@ public class PathCalculator : MonoBehaviour
                 if (!x.shortestPath.ContainsKey(y)) {
                     x.shortestPath.Add(y, new ShortestDistance());
                 }
-                if (x.connectedObjects.Contains(y) && y != closestToIT) {
+                if (x.connectedObjects.Contains(y) /*&& y != closestToIT*/) {
                     x.shortestPath[y].nextStep = y;
                     x.shortestPath[y].distance = (x.transform.position - y.transform.position).magnitude;
                 } else {
@@ -58,6 +57,7 @@ public class PathCalculator : MonoBehaviour
             maxDis = x.shortestPath.Values.Select(e => e.distance).Max();
             x.farthestObject = x.shortestPath.Where(e => e.Value.distance == maxDis).Random().Key;
         }
+        yield return null;
     }
 
 }

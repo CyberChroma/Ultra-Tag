@@ -13,6 +13,7 @@ public class PathfindingEditorTools : MonoBehaviour
 
     public void DrawConnections()
     {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
         List<PathfindingObject> connections = new List<PathfindingObject>();
         foreach (PathfindingObject pathfindingObject in pathfindingObjects) {
             if (pathfindingObject != null) {
@@ -41,8 +42,23 @@ public class PathfindingEditorTools : MonoBehaviour
         }
     }
 
-    public void MakeNewConnection(PathfindingObject[] selectedPathfindingObjects)
+    public void MakeNewConnection(PathfindingObject selectedPathfindingObject)
     {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
+        GameObject newPathfindingObjectPrefab = (GameObject)PrefabUtility.InstantiatePrefab(PrefabUtility.GetCorrespondingObjectFromSource(selectedPathfindingObject.gameObject), transform);
+        newPathfindingObjectPrefab.transform.position = selectedPathfindingObject.transform.position;
+        PathfindingObject newPathfindingObject = newPathfindingObjectPrefab.GetComponent<PathfindingObject>();
+        selectedPathfindingObject.connectedObjects.Add(newPathfindingObject);
+        newPathfindingObject.connectedObjects.Add(selectedPathfindingObject);
+        EditorUtility.SetDirty(selectedPathfindingObject);
+        EditorUtility.SetDirty(newPathfindingObjectPrefab);
+        Selection.activeGameObject = newPathfindingObjectPrefab;
+        Rename();
+    }
+
+    public void MakeBetweenConnection(PathfindingObject[] selectedPathfindingObjects)
+    {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
         Vector3 positionSum = Vector3.zero;
         foreach (PathfindingObject selection in selectedPathfindingObjects) {
             positionSum += selection.transform.position;
@@ -72,10 +88,12 @@ public class PathfindingEditorTools : MonoBehaviour
             EditorUtility.SetDirty(currSelection);
         }
         EditorUtility.SetDirty(newPathfindingObjectPrefab);
+        Rename();
     }
 
     public void MakeConnections(PathfindingObject[] selectedPathfindingObjects)
     {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
         foreach (PathfindingObject currSelection in selectedPathfindingObjects) {
             foreach (PathfindingObject otherSelection in selectedPathfindingObjects) {
                 if (currSelection != otherSelection) {
@@ -88,8 +106,32 @@ public class PathfindingEditorTools : MonoBehaviour
         }
     }
 
+    public void MakeOneWayConnections(PathfindingObject[] selectedPathfindingObjects)
+    {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
+        float maxY = -100;
+        int maxHeightIndex = 0;
+        for (int i = 0; i < selectedPathfindingObjects.Length; i++) { 
+            if (selectedPathfindingObjects[i].transform.position.y > maxY) {
+                maxY = selectedPathfindingObjects[i].transform.position.y;
+                maxHeightIndex = i;
+            }
+        }
+        PathfindingObject highestWaypoint = selectedPathfindingObjects[maxHeightIndex];
+
+        foreach (PathfindingObject currSelection in selectedPathfindingObjects) {
+            if (currSelection != highestWaypoint) {
+                if (!highestWaypoint.connectedObjects.Contains(currSelection)) {
+                    highestWaypoint.connectedObjects.Add(currSelection);
+                }
+            }
+            EditorUtility.SetDirty(currSelection);
+        }
+    }
+
     public void RemoveConnections(PathfindingObject[] selectedPathfindingObjects)
     {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
         foreach (PathfindingObject currSelection in selectedPathfindingObjects) {
             foreach (PathfindingObject otherSelection in selectedPathfindingObjects) {
                 if (currSelection != otherSelection) {
@@ -104,18 +146,35 @@ public class PathfindingEditorTools : MonoBehaviour
 
     public void CleanUp()
     {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
         foreach (PathfindingObject pathfindingObject in pathfindingObjects) {
-            List<PathfindingObject> connectionsToRemove = new List<PathfindingObject>();
-            foreach (PathfindingObject connection in pathfindingObject.connectedObjects) {
-                if (connection == null) {
-                    connectionsToRemove.Add(connection);
+            if (pathfindingObject != null) {
+                List<PathfindingObject> connectionsToRemove = new List<PathfindingObject>();
+                foreach (PathfindingObject connection in pathfindingObject.connectedObjects) {
+                    if (connection == null) {
+                        connectionsToRemove.Add(connection);
+                    }
                 }
-            }
 
-            foreach (PathfindingObject connectionToRemove in connectionsToRemove) {
-                pathfindingObject.connectedObjects.Remove(connectionToRemove);
+                foreach (PathfindingObject connectionToRemove in connectionsToRemove) {
+                    pathfindingObject.connectedObjects.Remove(connectionToRemove);
+                }
+                EditorUtility.SetDirty(pathfindingObject);
             }
-            EditorUtility.SetDirty(pathfindingObject);
+        }
+        Rename();
+    }
+
+    private void Rename()
+    {
+        pathfindingObjects = FindObjectsOfType<PathfindingObject>();
+        int currName = 0;
+        foreach (PathfindingObject pathfindingObject in pathfindingObjects) {
+            if (pathfindingObject != null) {
+                pathfindingObject.name = "Waypoint " + currName;
+                currName++;
+                EditorUtility.SetDirty(pathfindingObject);
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ public class AITriggerInteractionInput : MonoBehaviour
         characterJump.Jump(jumpDown, jumpHeld);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (canPressJump && other.CompareTag("Jump Trigger")) {
             JumpTrigger jumpTrigger = other.GetComponent<JumpTrigger>();

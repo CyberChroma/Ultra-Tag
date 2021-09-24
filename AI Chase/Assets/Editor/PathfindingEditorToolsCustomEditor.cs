@@ -17,10 +17,6 @@ public class PathfindingEditorToolsCustomEditor : Editor
         SceneView.duringSceneGui += this.OnSceneGUI;
     }
 
-    void OnDisable()
-    {
-    }
-
     private void OnSceneGUI(SceneView sceneView)
     {
         if (pathfindingEditorTools != null &&pathfindingEditorTools.drawConnections) {
@@ -34,12 +30,20 @@ public class PathfindingEditorToolsCustomEditor : Editor
         EditorGUILayout.Space();
         if (GUILayout.Button("Make New Connection")) {
             GameObject[] selectedObjects = Selection.gameObjects;
+            if (selectedObjects.Length == 1) {
+                pathfindingEditorTools.MakeNewConnection(selectedObjects[0].GetComponent<PathfindingObject>());
+                EditorSceneManager.MarkSceneDirty(pathfindingEditorTools.gameObject.scene);
+            }
+        }
+        EditorGUILayout.Space();
+        if (GUILayout.Button("Make Connection Between")) {
+            GameObject[] selectedObjects = Selection.gameObjects;
             if (selectedObjects.Length > 1) {
                 PathfindingObject[] selectedPathfindingObjects = new PathfindingObject[selectedObjects.Length];
                 for (int i = 0; i < selectedObjects.Length; i++) {
                     selectedPathfindingObjects[i] = selectedObjects[i].GetComponent<PathfindingObject>();
                 }
-                pathfindingEditorTools.MakeNewConnection(selectedPathfindingObjects);
+                pathfindingEditorTools.MakeBetweenConnection(selectedPathfindingObjects);
                 EditorSceneManager.MarkSceneDirty(pathfindingEditorTools.gameObject.scene);
             }
         }
@@ -56,6 +60,18 @@ public class PathfindingEditorToolsCustomEditor : Editor
             }
         }
         EditorGUILayout.Space();
+        if (GUILayout.Button("Make One Way Connections")) {
+            GameObject[] selectedObjects = Selection.gameObjects;
+            if (selectedObjects.Length > 1) {
+                PathfindingObject[] selectedPathfindingObjects = new PathfindingObject[selectedObjects.Length];
+                for (int i = 0; i < selectedObjects.Length; i++) {
+                    selectedPathfindingObjects[i] = selectedObjects[i].GetComponent<PathfindingObject>();
+                }
+                pathfindingEditorTools.MakeOneWayConnections(selectedPathfindingObjects);
+                EditorSceneManager.MarkSceneDirty(pathfindingEditorTools.gameObject.scene);
+            }
+        }
+        EditorGUILayout.Space();
         if (GUILayout.Button("Remove Connections")) {
             GameObject[] selectedObjects = Selection.gameObjects;
             if (selectedObjects.Length > 1) {
@@ -68,7 +84,7 @@ public class PathfindingEditorToolsCustomEditor : Editor
             }
         }
         EditorGUILayout.Space();
-        if (GUILayout.Button("Clean Up Empty Connections")) {
+        if (GUILayout.Button("Clean Up")) {
             pathfindingEditorTools.CleanUp();
             EditorSceneManager.MarkSceneDirty(pathfindingEditorTools.gameObject.scene);
         }

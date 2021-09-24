@@ -8,11 +8,13 @@ public class CharacterItState : MonoBehaviour
 
     private bool canTag;
     private ITCharacterTracker itCharacterTracker;
+    private CharacterDisable characterDisable;
 
     void Start()
     {
         itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
         canTag = itCharacterTracker.ITCharacter == transform.parent;
+        characterDisable = GetComponentInParent<CharacterDisable>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,7 +33,9 @@ public class CharacterItState : MonoBehaviour
 
     public IEnumerator WaitToTag ()
     {
+        characterDisable.DeactivateCharacter();
         yield return new WaitForSeconds(waitToTagTime);
+        characterDisable.ActivateCharacter();
         canTag = true;
     }
 }

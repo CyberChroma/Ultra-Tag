@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIPathfindingInput : MonoBehaviour
 {
+    public int difficulty;
+
     public float turnAmountToMoveForward = 90;
 
     public PathfindingObject currDestination;
@@ -55,43 +57,63 @@ public class AIPathfindingInput : MonoBehaviour
     void GetDestination()
     {
         if (itCharacterTracker.ITCharacter.transform != lastITCharacter) {
-            itCharacterClosestPathfinding = itCharacterTracker.ITCharacter.GetComponentInChildren<CharacterClosestPathfinding>();
-            pathCalculator.CalculatePaths();
-            itClosestPath = itCharacterClosestPathfinding.closestPathfindingObject;
-            endDestination = itClosestPath.farthestObject;
+            ITCharacterChange();
         } else {
             itClosestPath = itCharacterClosestPathfinding.closestPathfindingObject;
         }
         selfClosestPath = selfCharacterClosestPathfinding.closestPathfindingObject;
 
         if (itClosestPath != null && itClosestPath != lastITClosestPath) {
-            pathCalculator.CalculatePaths();
-            if (itCharacterTracker.ITCharacter == transform) {
-                float minDis = Mathf.Infinity;
-                int minDisIndex = 0;
-                float currDis = 0;
-                for (int i = 0; i < allCharacterClosestPathfinding.Length; i++) {
-                    if (allCharacterClosestPathfinding[i] != selfCharacterClosestPathfinding) {
-                        currDis = (allCharacterClosestPathfinding[i].transform.position - transform.position).magnitude;
-                        if (currDis < minDis) {
-                            minDis = currDis;
-                            minDisIndex = i;
-                        }
-                    }
-                }
-                closestCharacterClosestPathfinding = allCharacterClosestPathfinding[minDisIndex];
-                endDestination = closestCharacterClosestPathfinding.closestPathfindingObject;
-            }
-            else {
-                endDestination = itClosestPath.farthestObject;
-            }
+            ITClosestWaypointChange();
         }
         if (selfClosestPath != null) {
+            if (currDestination == endDestination && itCharacterTracker.ITCharacter != transform) {
+                endDestination = pathCalculator.pathfindingObjects[Random.Range(0, pathCalculator.pathfindingObjects.Length)];
+            }
             currDestination = selfClosestPath.shortestPath[endDestination].nextStep;
         }
 
         lastITCharacter = itCharacterTracker.ITCharacter.transform;
         lastITClosestPath = itClosestPath;
+    }
+
+    void ITCharacterChange()
+    {
+        itCharacterClosestPathfinding = itCharacterTracker.ITCharacter.GetComponentInChildren<CharacterClosestPathfinding>();
+        itClosestPath = itCharacterClosestPathfinding.closestPathfindingObject;
+        NewEndDestination();
+    }
+
+    void ITClosestWaypointChange()
+    {
+        if (itCharacterTracker.ITCharacter == transform) {
+            float minDis = Mathf.Infinity;
+            int minDisIndex = 0;
+            float currDis = 0;
+            for (int i = 0; i < allCharacterClosestPathfinding.Length; i++) {
+                if (allCharacterClosestPathfinding[i] != selfCharacterClosestPathfinding) {
+                    currDis = (allCharacterClosestPathfinding[i].transform.position - transform.position).magnitude;
+                    if (currDis < minDis) {
+                        minDis = currDis;
+                        minDisIndex = i;
+                    }
+                }
+            }
+            closestCharacterClosestPathfinding = allCharacterClosestPathfinding[minDisIndex];
+            endDestination = closestCharacterClosestPathfinding.closestPathfindingObject;
+        }
+        else {
+            NewEndDestination();
+        }
+    }
+
+    void NewEndDestination ()
+    {
+        if (Random.Range(0, difficulty) == 0) {
+            endDestination = pathCalculator.pathfindingObjects[Random.Range(0, pathCalculator.pathfindingObjects.Length)];
+        } else {
+            endDestination = itClosestPath.farthestObject;
+        }
     }
 
     void MoveInput()
