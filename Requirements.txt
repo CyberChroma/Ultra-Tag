@@ -1,0 +1,16 @@
+Requirements
+Ultimate Tag: Deathmatch
+• At least 2 players:
+– A human controlled player.
+– At least one computer controlled player.
+– Players must be represented by 3D meshes.
+– Players must display with an animated run-cycle or walk-cycle when they move.
+It doesn’t have to be fancy, but it has to be animated.
+• A player must tag the other player by colliding with them.
+• Players must not be able to pass through walls or each other.
+• You must indicate which player is currently “it”.
+• You have to let the human player know if he is currently “it” or not. You must do
+this in an obvious way.
+• You may choose for the tag match to take place either indoors or outdoors.
+• Keep a score for each player, and end the game when the timer reaches 5 minutes.
+• When the game is complete it must gracefully restart.

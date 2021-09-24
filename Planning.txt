@@ -1,0 +1,62 @@
+Ultimate Tag
+
+Player chasing ai around arena, want to spend the most time being "not it".
+5 minute match, at the end whoever was not it the longest wins.
+
+Theme is spy chasing cartoony villians getting back secret weapon. While in your possession, bar fills up, you win when it's full.
+
+3 levels of increasing difficulty
+Level 1 - player chasing and being chased by 1 person
+Level 2 - player chasing and being chased by 2 people
+Level 3 - ??? 
+Other level ideas:
+player chasing 1 person while being chased by someone else
+normal tag, both have a goal they are trying to run to
+normal tag, but both players have a weapon
+normal tag, arena filled with traps
+
+Player moves:
+moving
+jumping
+general interact button
+
+Potential player moves:
+double jumping
+wall run
+wall jump
+arched weapon to make sticky surface that slow you down
+
+
+Level mechanic ideas:
+buttons that you press to do stuff (move walls, platforms, etc.)
+buttons that you stand on to do stuff (move walls, platforms, etc.)
+ice to slide on
+slime sticky floor that slows you down
+bouncy platform to bounce you to same height
+spring to launch you
+ladders
+doors
+traps that you activate that change things about the map
+conveyor belts
+wind/fans
+zero gravity field
+changing gravity on the roof
+honey that you can't jump while on
+teleports
+Spinning obstacles
+trap doors
+
+
+Hazards that stun you:
+electric surface
+something that swings back and forth
+
+
+Have multiple weapons the player can use
+Before going into a level, they choose their loadout
+AI has it's own loadout
+
+
+
+MAX JUMP HEIGHT - 2 Meters
+MAX JUMP LENGTH - 8 Meters (9 pixel perfect)
