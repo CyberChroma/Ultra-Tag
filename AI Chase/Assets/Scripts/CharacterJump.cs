@@ -33,13 +33,15 @@ public class CharacterJump : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (rb.velocity.y < 0) {
-            rb.AddForce(Vector3.down * fallMultiplier * 10);
+        if (!characterGroundDetection.isGrounded) {
+            if (rb.velocity.y < 0) {
+                rb.AddForce(Vector3.down * fallMultiplier * 10);
+            }
+            else if (!jumpHeld) {
+                rb.AddForce(Vector3.down * lowJumpMultiplier * 10);
+            }
+            rb.AddForce(Vector3.down * gravityMultiplier * 10);
         }
-        else if (!jumpHeld) {
-            rb.AddForce(Vector3.down * lowJumpMultiplier * 10);
-        }
-        rb.AddForce(Vector3.down * gravityMultiplier * 10);
 
         if (transform.position.y < -100) {
             transform.position = new Vector3(0, 2, -20);

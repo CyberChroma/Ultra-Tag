@@ -16,9 +16,10 @@ public class CharacterClosestPathfinding : MonoBehaviour
         closeRangePathfindingObjects = new List<PathfindingObject>();
         itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
         pathCalculator = FindObjectOfType<PathCalculator>();
+        closestPathfindingObject = GetClosestPathfindingObject();
     }
 
-    private void Update()
+    void Update()
     {
         if (pathCalculator != null) {
             closestPathfindingObject = GetClosestPathfindingObject();
@@ -49,7 +50,7 @@ public class CharacterClosestPathfinding : MonoBehaviour
         }
 
         PathfindingObject closestToSelf = arrayToUse[minDisIndex];
-        if (itCharacterTracker.ITCharacter != transform.parent && closestToSelf == pathCalculator.closestToIT && closestToSelf.connectedObjects.Count != 0) {
+        /*if (itCharacterTracker.ITCharacter != transform.parent && closestToSelf == pathCalculator.closestToIT && closestToSelf.connectedObjects.Count != 0) {
             List<PathfindingObject> connections = closestToSelf.connectedObjects;
             float thisCharacterDis;
             float itCharacterDis;
@@ -57,19 +58,21 @@ public class CharacterClosestPathfinding : MonoBehaviour
             float maxDis = 0;
             int maxDisIndex = 0;
             for (int i = 0; i < connections.Count; i++) {
-                thisCharacterDis = (connections[i].transform.position - transform.position).magnitude;
-                itCharacterDis = (connections[i].transform.position - itCharacterTracker.ITCharacter.position).magnitude;
-                varianceOfDis = itCharacterDis - thisCharacterDis;
-                if (varianceOfDis > maxDis) {
-                    maxDis = currDis;
-                    maxDisIndex = i;
+                if (connections[i] != null) {
+                    thisCharacterDis = (connections[i].transform.position - transform.position).magnitude;
+                    itCharacterDis = (connections[i].transform.position - itCharacterTracker.ITCharacter.position).magnitude;
+                    varianceOfDis = itCharacterDis - thisCharacterDis;
+                    if (varianceOfDis > maxDis) {
+                        maxDis = currDis;
+                        maxDisIndex = i;
+                    }
                 }
             }
 
             return connections[maxDisIndex];
-        } else {
-            return closestToSelf;
-        }
+        } else {*/
+        return closestToSelf;
+        //}
     }
 
     private void OnTriggerEnter(Collider other)

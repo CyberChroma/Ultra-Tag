@@ -17,7 +17,7 @@ public class CharacterItState : MonoBehaviour
         characterDisable = GetComponentInParent<CharacterDisable>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.transform.parent) {
             if (itCharacterTracker.ITCharacter == transform.parent && canTag) {

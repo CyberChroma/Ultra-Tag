@@ -138,7 +138,7 @@ public class AIPathfindingInput : MonoBehaviour
             closestCharacterPos = Vector3.zero;
         }
         Vector3 objToFace = Vector3.zero;
-        if (itCharacterTracker.ITCharacter == transform && (Vector3.Distance(transform.position, closestCharacterPos) < Vector3.Distance(transform.position, currDestination.transform.position) || currDestination == endDestination)) {
+        if (itCharacterTracker.ITCharacter == transform && (Mathf.Abs(transform.position.y - closestCharacterPos.y) < 5) && (Vector3.Distance(transform.position, closestCharacterPos) < Vector3.Distance(transform.position, currDestination.transform.position) || currDestination == endDestination)) {
             objToFace = closestCharacterPos;
         } else if (currDestination != null) {
             objToFace = currDestination.transform.position;
