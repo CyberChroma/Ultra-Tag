@@ -25,6 +25,7 @@ public class CharacterItState : MonoBehaviour
                 if (otherCharacterItState != null) {
                     canTag = false;
                     itCharacterTracker.ITCharacter = otherCharacterItState.transform.parent;
+                    itCharacterTracker.characterNotItTimes[other.transform.parent] = 0;
                     StartCoroutine(otherCharacterItState.WaitToTag());
                 }
             }
