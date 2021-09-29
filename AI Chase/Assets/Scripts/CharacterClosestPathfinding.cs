@@ -23,7 +23,7 @@ public class CharacterClosestPathfinding : MonoBehaviour
     {
         if (pathCalculator != null) {
             closestPathfindingObject = GetClosestPathfindingObject();
-            if (itCharacterTracker.ITCharacter == transform.parent) {
+            if (itCharacterTracker.ITCharacters.Contains(transform.parent)) {
                 pathCalculator.closestToIT = closestPathfindingObject;
             }
         }

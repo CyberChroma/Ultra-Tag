@@ -1,9 +1,6 @@
-make ui indication of who is it
-make ui bars for both characters that fill
-
-make win/lose condition
-
 make improved minimap
+
+improve ai pathfinding
 
 replace player and ai with human model
 makes animations

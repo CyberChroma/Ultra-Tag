@@ -13,21 +13,19 @@ public class CharacterItState : MonoBehaviour
     void Start()
     {
         itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
-        canTag = itCharacterTracker.ITCharacter == transform.parent;
+        canTag = itCharacterTracker.ITCharacters.Contains(transform.parent);
         characterDisable = GetComponentInParent<CharacterDisable>();
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.transform.parent) {
-            if (itCharacterTracker.ITCharacter == transform.parent && canTag) {
-                CharacterItState otherCharacterItState = other.GetComponent<CharacterItState>();
-                if (otherCharacterItState != null) {
-                    canTag = false;
-                    itCharacterTracker.ITCharacter = otherCharacterItState.transform.parent;
-                    itCharacterTracker.characterNotItTimes[other.transform.parent] = 0;
-                    StartCoroutine(otherCharacterItState.WaitToTag());
-                }
+        if (other.transform.parent && itCharacterTracker.ITCharacters.Contains(transform.parent) && !itCharacterTracker.ITCharacters.Contains(other.transform.parent) && canTag) {
+            CharacterItState otherCharacterItState = other.GetComponent<CharacterItState>();
+            if (otherCharacterItState != null) {
+                canTag = false;
+                itCharacterTracker.ITCharacters.Remove(transform.parent);
+                itCharacterTracker.ITCharacters.Add(otherCharacterItState.transform.parent);
+                StartCoroutine(otherCharacterItState.WaitToTag());
             }
         }
     }

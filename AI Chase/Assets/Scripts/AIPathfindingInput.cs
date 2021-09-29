@@ -56,7 +56,7 @@ public class AIPathfindingInput : MonoBehaviour
 
     void GetDestination()
     {
-        if (itCharacterTracker.ITCharacter.transform != lastITCharacter) {
+        if (itCharacterTracker.ITCharacters[0].transform != lastITCharacter) {
             ITCharacterChange();
         } else {
             itClosestPath = itCharacterClosestPathfinding.closestPathfindingObject;
@@ -67,31 +67,31 @@ public class AIPathfindingInput : MonoBehaviour
             ITClosestWaypointChange();
         }
         if (selfClosestPath != null) {
-            if (currDestination == endDestination && itCharacterTracker.ITCharacter != transform) {
+            if (currDestination == endDestination && !itCharacterTracker.ITCharacters.Contains(transform)) {
                 endDestination = pathCalculator.pathfindingObjects[Random.Range(0, pathCalculator.pathfindingObjects.Length)];
             }
             currDestination = selfClosestPath.shortestPath[endDestination].nextStep;
         }
 
-        lastITCharacter = itCharacterTracker.ITCharacter.transform;
+        lastITCharacter = itCharacterTracker.ITCharacters[0].transform;
         lastITClosestPath = itClosestPath;
     }
 
     void ITCharacterChange()
     {
-        itCharacterClosestPathfinding = itCharacterTracker.ITCharacter.GetComponentInChildren<CharacterClosestPathfinding>();
+        itCharacterClosestPathfinding = itCharacterTracker.ITCharacters[0].GetComponentInChildren<CharacterClosestPathfinding>();
         itClosestPath = itCharacterClosestPathfinding.closestPathfindingObject;
         NewEndDestination();
     }
 
     void ITClosestWaypointChange()
     {
-        if (itCharacterTracker.ITCharacter == transform) {
+        if (itCharacterTracker.ITCharacters.Contains(transform)) {
             float minDis = Mathf.Infinity;
             int minDisIndex = 0;
             float currDis = 0;
             for (int i = 0; i < allCharacterClosestPathfinding.Length; i++) {
-                if (allCharacterClosestPathfinding[i] != selfCharacterClosestPathfinding) {
+                if (allCharacterClosestPathfinding[i] != selfCharacterClosestPathfinding && !itCharacterTracker.ITCharacters.Contains(allCharacterClosestPathfinding[i].transform.parent)) {
                     currDis = (allCharacterClosestPathfinding[i].transform.position - transform.position).magnitude;
                     if (currDis < minDis) {
                         minDis = currDis;
@@ -138,7 +138,7 @@ public class AIPathfindingInput : MonoBehaviour
             closestCharacterPos = Vector3.zero;
         }
         Vector3 objToFace = Vector3.zero;
-        if (itCharacterTracker.ITCharacter == transform && (Mathf.Abs(transform.position.y - closestCharacterPos.y) < 5) && (Vector3.Distance(transform.position, closestCharacterPos) < Vector3.Distance(transform.position, currDestination.transform.position) || currDestination == endDestination)) {
+        if (itCharacterTracker.ITCharacters.Contains(transform) && (Mathf.Abs(transform.position.y - closestCharacterPos.y) < 5) && (Vector3.Distance(transform.position, closestCharacterPos) < Vector3.Distance(transform.position, currDestination.transform.position) || currDestination == endDestination)) {
             objToFace = closestCharacterPos;
         } else if (currDestination != null) {
             objToFace = currDestination.transform.position;
