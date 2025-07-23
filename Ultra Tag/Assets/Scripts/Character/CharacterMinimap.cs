@@ -26,7 +26,7 @@ public class CharacterMinimap : MonoBehaviour
         iconBackground.color = characterInfo.characterColour;
         iconBorder = characterIcon.transform.Find("Icon Border").GetComponent<SpriteRenderer>();
         iconItStateOutline = characterIcon.transform.Find("Icon It State Outline").GetComponent<SpriteRenderer>();
-        itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
+        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
         if (itCharacterTracker.ITCharacters.Contains(transform)) {
             iconItStateOutline.color = Color.red;
         } else {

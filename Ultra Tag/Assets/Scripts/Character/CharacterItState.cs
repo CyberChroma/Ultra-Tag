@@ -14,7 +14,7 @@ public class CharacterItState : MonoBehaviour
     void Start()
     {
         meshRenderers = transform.parent.GetComponentsInChildren<SkinnedMeshRenderer>();
-        itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
+        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
         canTag = itCharacterTracker.ITCharacters.Contains(transform.parent);
         characterDisable = GetComponentInParent<CharacterDisable>();
         ChangeOutline();

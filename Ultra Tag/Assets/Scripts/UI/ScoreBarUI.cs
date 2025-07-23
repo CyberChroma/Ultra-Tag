@@ -45,7 +45,7 @@ public class ScoreBarUI : MonoBehaviour
         }
 
         charWeAreFor = character;
-        itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
+        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
     }
 
     public void UpdateUI(float curScore, bool isIt)

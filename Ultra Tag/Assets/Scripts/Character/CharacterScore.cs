@@ -17,13 +17,13 @@ public class CharacterScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
+        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
         itCharacterTracker.characterScoreLeft.Add(transform, winTime);
-        Canvas canvas = FindObjectOfType<Canvas>();
+        Canvas canvas = FindFirstObjectByType<Canvas>();
         scoreBar = Instantiate(scoreBarPrefab, canvas.transform).GetComponent<ScoreBarUI>();
         scoreBar.name = name + " Score Bar";
         scoreBar.SetUp(characterInfo, winTime, player, itCharacterTracker.ITCharacters.Contains(transform), transform);
-        endGameUI = FindObjectOfType<EndGameUI>();
+        endGameUI = FindFirstObjectByType<EndGameUI>();
     }
 
     // Update is called once per frame

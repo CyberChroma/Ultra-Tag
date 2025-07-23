@@ -25,7 +25,7 @@ public class PathfindingEditorTools : MonoBehaviour
         if (density != 0) {
             List<Waypoint> airWaypoints = new List<Waypoint>();
             int waypointNum = 0;
-            waypoints = new List<Waypoint>(FindObjectsOfType<Waypoint>());
+            waypoints = new List<Waypoint>(FindObjectsByType<Waypoint>(FindObjectsSortMode.InstanceID));
             foreach (Waypoint waypoint in waypoints) {
                 if (waypoint) {
                     DestroyImmediate(waypoint.gameObject);

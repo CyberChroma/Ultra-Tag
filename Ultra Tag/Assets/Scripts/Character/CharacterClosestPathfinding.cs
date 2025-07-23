@@ -14,8 +14,8 @@ public class CharacterClosestPathfinding : MonoBehaviour
     void Start()
     {
         closeRangeWaypoints = new List<Waypoint>();
-        itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
-        pathCalculator = FindObjectOfType<PathCalculator>();
+        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
+        pathCalculator = FindFirstObjectByType<PathCalculator>();
         closestWaypoint = GetClosestWaypoint();
     }
 

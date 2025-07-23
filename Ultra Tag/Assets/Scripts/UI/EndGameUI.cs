@@ -18,11 +18,11 @@ public class EndGameUI : MonoBehaviour
         endGameScreen = transform.Find("End Game Panel").GetComponent<Image>();
         winNameText = endGameScreen.transform.Find("Win Text").GetComponent<Text>();
         endGameScreen.gameObject.SetActive(false);
-        mouseHide = FindObjectOfType<MouseHide>();
+        mouseHide = FindFirstObjectByType<MouseHide>();
         Time.timeScale = 1;
     }
 
-    public void EndGame (string winner)
+    public void EndGame(string winner)
     {
         Time.timeScale = 0;
         endGameScreen.gameObject.SetActive(true);
@@ -35,7 +35,7 @@ public class EndGameUI : MonoBehaviour
         mouseHide.Unhide();
     }
 
-    public void Restart ()
+    public void Restart()
     {
         Time.timeScale = 1;
         mouseHide.Hide();

@@ -42,10 +42,10 @@ public class AIPathfindingInput : MonoBehaviour
         characterMove = GetComponent<CharacterMove>();
         characterTurn = GetComponent<CharacterTurn>();
         rb = GetComponent<Rigidbody>();
-        itCharacterTracker = FindObjectOfType<ITCharacterTracker>();
+        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
         selfCharacterClosestPathfinding = GetComponentInChildren<CharacterClosestPathfinding>();
-        allCharacterClosestPathfinding = FindObjectsOfType<CharacterClosestPathfinding>();
-        pathCalculator = FindObjectOfType<PathCalculator>();
+        allCharacterClosestPathfinding = FindObjectsByType<CharacterClosestPathfinding>(FindObjectsSortMode.InstanceID);
+        pathCalculator = FindFirstObjectByType<PathCalculator>();
     }
 
     // Update is called once per frame
