@@ -15,8 +15,8 @@ public class PathfindingEditorToolsCustomEditor : Editor
     // Start is called before the first frame update
     void OnEnable()
     {
-        pathfindingEditorTools = FindObjectOfType<PathfindingEditorTools>();
-        pathCalculator = FindObjectOfType<PathCalculator>();
+        pathfindingEditorTools = FindFirstObjectByType<PathfindingEditorTools>();
+        pathCalculator = FindFirstObjectByType<PathCalculator>();
         SceneView.duringSceneGui += this.OnSceneGUI;
     }
 

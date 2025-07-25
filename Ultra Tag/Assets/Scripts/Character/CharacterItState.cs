@@ -9,25 +9,25 @@ public class CharacterItState : MonoBehaviour
     private bool canTag;
     private SkinnedMeshRenderer[] meshRenderers;
     private CharacterDisable characterDisable;
-    private ITCharacterTracker itCharacterTracker;
 
     void Start()
     {
         meshRenderers = transform.parent.GetComponentsInChildren<SkinnedMeshRenderer>();
-        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
-        canTag = itCharacterTracker.ITCharacters.Contains(transform.parent);
+        canTag = ITCharacterTracker.ITCharacters.Contains(transform);
         characterDisable = GetComponentInParent<CharacterDisable>();
         ChangeOutline();
     }
 
-    private void OnTriggerStay(Collider other)
+    public void AttemptTag(Transform other)
     {
-        if (other.transform.parent && itCharacterTracker.ITCharacters.Contains(transform.parent) && !itCharacterTracker.ITCharacters.Contains(other.transform.parent) && canTag) {
+        if (canTag)
+        {
             CharacterItState otherCharacterItState = other.GetComponent<CharacterItState>();
-            if (otherCharacterItState != null) {
+            if (otherCharacterItState != null)
+            {
                 canTag = false;
-                itCharacterTracker.ITCharacters.Remove(transform.parent);
-                itCharacterTracker.ITCharacters.Add(otherCharacterItState.transform.parent);
+                ITCharacterTracker.ITCharacters.Remove(transform);
+                ITCharacterTracker.ITCharacters.Add(otherCharacterItState.transform);
                 ChangeOutline();
                 otherCharacterItState.ChangeOutline();
                 StartCoroutine(otherCharacterItState.WaitToTag());
@@ -37,7 +37,7 @@ public class CharacterItState : MonoBehaviour
 
     public void ChangeOutline()
     {
-        bool changeToRed = itCharacterTracker.ITCharacters.Contains(transform.parent);
+        bool changeToRed = ITCharacterTracker.ITCharacters.Contains(transform);
         foreach (SkinnedMeshRenderer meshRenderer in meshRenderers) {
             if (changeToRed) {
                 meshRenderer.material.SetColor("_Outline_Colour", Color.red);
@@ -47,7 +47,7 @@ public class CharacterItState : MonoBehaviour
         }
     }
 
-    public IEnumerator WaitToTag ()
+    public IEnumerator WaitToTag()
     {
         characterDisable.DeactivateCharacter();
         yield return new WaitForSeconds(waitToTagTime);

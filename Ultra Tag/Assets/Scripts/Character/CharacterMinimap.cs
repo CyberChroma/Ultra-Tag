@@ -27,7 +27,7 @@ public class CharacterMinimap : MonoBehaviour
         iconBorder = characterIcon.transform.Find("Icon Border").GetComponent<SpriteRenderer>();
         iconItStateOutline = characterIcon.transform.Find("Icon It State Outline").GetComponent<SpriteRenderer>();
         itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
-        if (itCharacterTracker.ITCharacters.Contains(transform)) {
+        if (ITCharacterTracker.ITCharacters.Contains(transform)) {
             iconItStateOutline.color = Color.red;
         } else {
             iconItStateOutline.color = Color.green;
@@ -45,7 +45,7 @@ public class CharacterMinimap : MonoBehaviour
     {
         characterIcon.transform.position = new Vector3(transform.position.x, minimapIconOffset, transform.position.z);
 
-        if (itCharacterTracker.ITCharacters.Contains(transform)) {
+        if (ITCharacterTracker.ITCharacters.Contains(transform)) {
             iconItStateOutline.color = Color.red;
         }
         else {

@@ -24,11 +24,11 @@ public class CharacterMove : MonoBehaviour
         rb.AddRelativeForce(new Vector3(lrDir, 0, fbDir) * moveSpeed, ForceMode.Impulse);
         fbDir = 0;
         lrDir = 0;
-        if (rb.velocity.magnitude <= 1) {
-            anim.SetBool("IsRunning", false);
+        if (rb.linearVelocity.magnitude <= 1) {
+            anim?.SetBool("IsRunning", false);
         }
         else {
-            anim.SetBool("IsRunning", true);
+            anim?.SetBool("IsRunning", true);
         }
     }
 

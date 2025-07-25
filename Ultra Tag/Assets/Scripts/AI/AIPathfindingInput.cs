@@ -51,58 +51,72 @@ public class AIPathfindingInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetDestination();
-        MoveInput();
-        TurnInput();
+        //GetDestination();
+        //MoveInput();
+        //TurnInput();
     }
 
     void GetDestination()
     {
-        if (itCharacterTracker.ITCharacters[0].transform != lastITCharacter) {
+        if (ITCharacterTracker.ITCharacters[0].transform != lastITCharacter)
+        {
             ITCharacterChange();
-        } else {
+        }
+        else
+        {
             itClosestPath = itCharacterClosestPathfinding.closestWaypoint;
         }
         selfClosestPath = selfCharacterClosestPathfinding.closestWaypoint;
 
-        if (itClosestPath != null && itClosestPath != lastITClosestPath) {
+        if (itClosestPath != null && itClosestPath != lastITClosestPath)
+        {
             ITClosestWaypointChange();
         }
-        if (selfClosestPath != null) {
-            if (currDestination == endDestination && !itCharacterTracker.ITCharacters.Contains(transform)) {
+        if (selfClosestPath != null)
+        {
+            if (currDestination == endDestination && !ITCharacterTracker.ITCharacters.Contains(transform))
+            {
                 endDestination = pathCalculator.waypoints[Random.Range(0, pathCalculator.waypoints.Length)];
             }
-            if (selfClosestPath.shortestPathNextSteps[int.Parse(endDestination.name.Split(' ')[1])] == -1) {
+            if (selfClosestPath.shortestPathNextSteps[int.Parse(endDestination.name.Split(' ')[1])] == -1)
+            {
                 NewEndDestination();
-            } else {
+            }
+            else
+            {
                 currDestination = selfClosestPath.connectedObjects[selfClosestPath.shortestPathNextSteps[int.Parse(endDestination.name.Split(' ')[1])]];
-                if (currDestination.isAirWaypoint) {
+                if (currDestination.isAirWaypoint)
+                {
                     StartCoroutine(aiTriggerInteractionInput.HoldJump(2));
                 }
             }
         }
 
-        lastITCharacter = itCharacterTracker.ITCharacters[0].transform;
+        lastITCharacter = ITCharacterTracker.ITCharacters[0].transform;
         lastITClosestPath = itClosestPath;
     }
 
     void ITCharacterChange()
     {
-        itCharacterClosestPathfinding = itCharacterTracker.ITCharacters[0].GetComponentInChildren<CharacterClosestPathfinding>();
+        itCharacterClosestPathfinding = ITCharacterTracker.ITCharacters[0].GetComponentInChildren<CharacterClosestPathfinding>();
         itClosestPath = itCharacterClosestPathfinding.closestWaypoint;
         NewEndDestination();
     }
 
     void ITClosestWaypointChange()
     {
-        if (itCharacterTracker.ITCharacters.Contains(transform)) {
+        if (ITCharacterTracker.ITCharacters.Contains(transform))
+        {
             float minDis = Mathf.Infinity;
             int minDisIndex = 0;
             float currDis = 0;
-            for (int i = 0; i < allCharacterClosestPathfinding.Length; i++) {
-                if (allCharacterClosestPathfinding[i] != selfCharacterClosestPathfinding && !itCharacterTracker.ITCharacters.Contains(allCharacterClosestPathfinding[i].transform.parent)) {
+            for (int i = 0; i < allCharacterClosestPathfinding.Length; i++)
+            {
+                if (allCharacterClosestPathfinding[i] != selfCharacterClosestPathfinding && !ITCharacterTracker.ITCharacters.Contains(allCharacterClosestPathfinding[i].transform.parent))
+                {
                     currDis = (allCharacterClosestPathfinding[i].transform.position - transform.position).magnitude;
-                    if (currDis < minDis) {
+                    if (currDis < minDis)
+                    {
                         minDis = currDis;
                         minDisIndex = i;
                     }
@@ -111,25 +125,32 @@ public class AIPathfindingInput : MonoBehaviour
             closestCharacterClosestPathfinding = allCharacterClosestPathfinding[minDisIndex];
             endDestination = closestCharacterClosestPathfinding.closestWaypoint;
         }
-        else {
+        else
+        {
             NewEndDestination();
         }
     }
 
-    void NewEndDestination ()
+    void NewEndDestination()
     {
-        if (Random.Range(0, difficulty) == 0) {
+        if (Random.Range(0, difficulty) == 0)
+        {
             endDestination = pathCalculator.waypoints[Random.Range(0, pathCalculator.waypoints.Length)];
-        } else {
+        }
+        else
+        {
             endDestination = itClosestPath.farthestObject;
         }
     }
 
     void MoveInput()
     {
-        if (Mathf.Abs(amountToRotate) > turnAmountToMoveForward) {
+        if (Mathf.Abs(amountToRotate) > turnAmountToMoveForward)
+        {
             front = false;
-        } else {
+        }
+        else
+        {
             front = true;
         }
         back = false;
@@ -141,32 +162,45 @@ public class AIPathfindingInput : MonoBehaviour
     void TurnInput()
     {
         Vector3 closestCharacterPos;
-        if (closestCharacterClosestPathfinding != null) {
+        if (closestCharacterClosestPathfinding != null)
+        {
             closestCharacterPos = closestCharacterClosestPathfinding.transform.position;
-        } else {
+        }
+        else
+        {
             closestCharacterPos = Vector3.zero;
         }
         Vector3 objToFace = Vector3.zero;
-        if (itCharacterTracker.ITCharacters.Contains(transform) && (Mathf.Abs(transform.position.y - closestCharacterPos.y) < 5) && (Vector3.Distance(transform.position, closestCharacterPos) < Vector3.Distance(transform.position, currDestination.transform.position) || currDestination == endDestination)) {
+        if (ITCharacterTracker.ITCharacters.Contains(transform) && (Mathf.Abs(transform.position.y - closestCharacterPos.y) < 5) && (Vector3.Distance(transform.position, closestCharacterPos) < Vector3.Distance(transform.position, currDestination.transform.position) || currDestination == endDestination))
+        {
             objToFace = closestCharacterPos;
-        } else if (currDestination != null) {
+        }
+        else if (currDestination != null)
+        {
             objToFace = currDestination.transform.position;
         }
         float rotationToFace = Quaternion.LookRotation(objToFace - transform.position).eulerAngles.y;
         amountToRotate = transform.rotation.eulerAngles.y - rotationToFace;
 
-        if (amountToRotate > 180) {
+        if (amountToRotate > 180)
+        {
             amountToRotate -= 360;
         }
-        else if (amountToRotate < -180) {
+        else if (amountToRotate < -180)
+        {
             amountToRotate += 360;
         }
 
-        if (Mathf.Abs(amountToRotate) < 1) {
+        if (Mathf.Abs(amountToRotate) < 1)
+        {
             mouseHorizontal = 0;
-        } else if (amountToRotate > 0) {
+        }
+        else if (amountToRotate > 0)
+        {
             mouseHorizontal = -1;
-        } else {
+        }
+        else
+        {
             mouseHorizontal = 1;
         }
 

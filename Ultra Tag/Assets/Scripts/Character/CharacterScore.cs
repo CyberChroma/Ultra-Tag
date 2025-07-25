@@ -22,14 +22,14 @@ public class CharacterScore : MonoBehaviour
         Canvas canvas = FindFirstObjectByType<Canvas>();
         scoreBar = Instantiate(scoreBarPrefab, canvas.transform).GetComponent<ScoreBarUI>();
         scoreBar.name = name + " Score Bar";
-        scoreBar.SetUp(characterInfo, winTime, player, itCharacterTracker.ITCharacters.Contains(transform), transform);
+        scoreBar.SetUp(characterInfo, winTime, player, ITCharacterTracker.ITCharacters.Contains(transform), transform);
         endGameUI = FindFirstObjectByType<EndGameUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!itCharacterTracker.ITCharacters.Contains(transform)) {
+        if (!ITCharacterTracker.ITCharacters.Contains(transform)) {
             curScore += Time.deltaTime;
             itCharacterTracker.characterScoreLeft[transform] = winTime - curScore;
 
@@ -41,7 +41,7 @@ public class CharacterScore : MonoBehaviour
         float timeSmoothing = scorebarMoveSmoothing * Time.deltaTime;
         bool first = itCharacterTracker.winningCharacter == transform;
         bool second = itCharacterTracker.secondCharacter == transform;
-        scoreBar.UpdateUI(curScore, itCharacterTracker.ITCharacters.Contains(transform));
+        scoreBar.UpdateUI(curScore, ITCharacterTracker.ITCharacters.Contains(transform));
         if (!player) {
             scoreBar.Move(first, second, timeSmoothing);
         }

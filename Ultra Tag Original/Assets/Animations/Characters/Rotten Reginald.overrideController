@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rotten Reginald
+  m_Controller: {fileID: 9100000, guid: e2c1a4e52600fdc4fac6763b90a33b1b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -203655887218126122, guid: e2026a78196374944b89fe2ff0c69a57, type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 7fb77f1249c1d9a4ba71ebde164c6c28, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: bf950ffc734e5a54c81ffdd9cf160fc0, type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 0de5e78de8be78840b188152ca125a8c, type: 3}

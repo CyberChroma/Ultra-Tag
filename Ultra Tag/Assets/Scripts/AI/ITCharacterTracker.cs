@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ITCharacterTracker : MonoBehaviour
 {
-    public List<Transform> ITCharacters = new List<Transform>();
+    public static List<Transform> ITCharacters = new List<Transform>();
 
+
+    public List<Transform> startingITCharacters = new List<Transform>();
     public Dictionary<Transform, float> characterScoreLeft = new Dictionary<Transform, float>();
     public Transform winningCharacter;
     public Transform secondCharacter;
@@ -13,8 +15,9 @@ public class ITCharacterTracker : MonoBehaviour
 
     private float curMinScoreLeft;
 
-    void Start()
+    void Awake()
     {
+        ITCharacters = startingITCharacters;
         winningCharacter = ITCharacters[0];
         secondCharacter = ITCharacters[0];
     }
