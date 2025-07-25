@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Jump Trigger
   - Agent
+  - Hurdle
   layers:
   - Default
   - TransparentFX
