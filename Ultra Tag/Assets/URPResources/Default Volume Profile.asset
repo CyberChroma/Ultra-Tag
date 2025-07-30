@@ -354,6 +354,7 @@ MonoBehaviour:
   - {fileID: -6423478265922393611}
   - {fileID: -969861361501211769}
   - {fileID: 6220132438935660937}
+  - {fileID: 5282144592995775172}
 --- !u!114 &129180804522519873
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -502,6 +503,28 @@ MonoBehaviour:
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
+--- !u!114 &5282144592995775172
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72cb0c2cc52fa3a44b1a122ca1cd6dcc, type: 3}
+  m_Name: DitherVolumeComponent
+  m_EditorClassIdentifier: 
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.5
+  scale:
+    m_OverrideState: 1
+    m_Value: 1
+  ditherType:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &6220132438935660937
 MonoBehaviour:
   m_ObjectHideFlags: 3

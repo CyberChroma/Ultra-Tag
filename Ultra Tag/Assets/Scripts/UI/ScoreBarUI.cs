@@ -3,69 +3,65 @@ using UnityEngine.UI;
 
 public class ScoreBarUI : MonoBehaviour
 {
-    private RectTransform rect;
-    private RectTransform onScreenPosRect;
-    private RectTransform offScreenPosRect;
-    private Slider selfScorebar;
-    private Image scorebarFill;
-    private Image iconBackground;
-    private Image icon;
-    private Image itStateBackground;
-    private Transform charWeAreFor;
-    private ITCharacterTracker itCharacterTracker;
+    [Header("References")]
+    [SerializeField] private Slider scorebar;
+    [SerializeField] private Image scorebarFill;
+    [SerializeField] private Image iconBackground;
+    [SerializeField] private Image icon;
+    [SerializeField] private Image roleBackground;
 
-    public void SetUp(CharacterInfo characterInfo, float winTime, bool player, bool startingIt, Transform character)
+    [SerializeField] private RectTransform onScreenPosRect;
+    [SerializeField] private RectTransform offScreenPosRect;
+
+    private RectTransform rect;
+    private CharacterStateTracker characterStateTracker;
+    private Transform attachedCharacter;
+
+    private static readonly Color HunterColor = Color.red;
+    private static readonly Color EvaderColor = Color.green;
+
+    public void SetUp(CharacterInfo characterInfo, float winScore, bool isPlayer, bool startingHunter, Transform character)
     {
         rect = GetComponent<RectTransform>();
+        attachedCharacter = character;
+        characterStateTracker = CharacterStateTracker.Instance;
+
         onScreenPosRect = transform.parent.Find("On Screen Pos").GetComponent<RectTransform>();
         offScreenPosRect = transform.parent.Find("Off Screen Pos").GetComponent<RectTransform>();
 
-        if (!player) {
+        if (!isPlayer)
+        {
             rect.SetParent(offScreenPosRect, true);
             rect.localPosition = Vector2.zero;
         }
 
-        selfScorebar = GetComponent<Slider>();
-        selfScorebar.maxValue = winTime;
-        selfScorebar.value = 0;
-        scorebarFill = transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
-        scorebarFill.color = characterInfo.characterColour;
+        scorebar.maxValue = winScore;
+        scorebar.value = 0;
 
-        iconBackground = transform.Find("Character Icon Border").Find("Character Icon Background").GetComponent<Image>();
+        scorebarFill.color = characterInfo.characterColour;
         iconBackground.color = characterInfo.characterColour;
-        icon = iconBackground.transform.Find("Character Icon").GetComponent<Image>();
         icon.sprite = characterInfo.characterIcon;
 
-        itStateBackground = transform.Find("It State Outline").GetComponent<Image>();
-        if (startingIt) {
-            itStateBackground.color = Color.red;
-        }
-        else {
-            itStateBackground.color = Color.green;
-        }
-
-        charWeAreFor = character;
-        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
+        roleBackground.color = startingHunter ? HunterColor : EvaderColor;
     }
 
-    public void UpdateUI(float curScore, bool isIt)
+    public void UpdateUI(float curScore, bool isHunter)
     {
-        selfScorebar.value = curScore;
-        if (isIt) {
-            itStateBackground.color = Color.red;
-        }
-        else {
-            itStateBackground.color = Color.green;
-        }
+        scorebar.value = curScore;
+        roleBackground.color = isHunter ? HunterColor : EvaderColor;
     }
 
-    public void Move(bool first, bool second, float smoothing)
+    public void Move(bool isFirst, bool isSecond)
     {
-        if (first || (itCharacterTracker.winningCharacter == itCharacterTracker.player && second)) {
-            rect.SetParent(onScreenPosRect, true);
-        } else {
-            rect.SetParent(offScreenPosRect, true);
-        }
-        rect.localPosition = new Vector3(rect.localPosition.x, Mathf.Lerp(rect.localPosition.y, 0, smoothing));
+        const float smoothing = 10f;
+        bool shouldMoveOnScreen = ShouldBeOnScreen(isFirst, isSecond);
+
+        rect.SetParent(shouldMoveOnScreen ? onScreenPosRect : offScreenPosRect, true);
+        rect.localPosition = new Vector3(rect.localPosition.x, Mathf.Lerp(rect.localPosition.y, 0f, Time.deltaTime * smoothing));
+    }
+
+    private bool ShouldBeOnScreen(bool isFirst, bool isSecond)
+    {
+        return isFirst || (CharacterStateTracker.Instance.player == attachedCharacter && isSecond);
     }
 }

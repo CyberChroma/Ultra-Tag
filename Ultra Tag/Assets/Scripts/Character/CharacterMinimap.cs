@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMinimap : MonoBehaviour
 {
-    public float minimapIconOffset = 150;
+    [Header("Setup")]
+    public float minimapIconOffset = 150f;
     public SpriteRenderer minimapIconPrefab;
     public CharacterInfo characterInfo;
 
@@ -12,44 +11,65 @@ public class CharacterMinimap : MonoBehaviour
     private SpriteRenderer characterIcon;
     private SpriteRenderer iconBackground;
     private SpriteRenderer iconBorder;
-    private SpriteRenderer iconItStateOutline;
-    private ITCharacterTracker itCharacterTracker;
+    private SpriteRenderer iconRoleOutline;
+    private CharacterTag characterTag;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        iconsParent = GameObject.Find("Minimap Character Icons").transform;
-        characterIcon = Instantiate(minimapIconPrefab, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), iconsParent);
-        characterIcon.name = name + " Character Icon";
-        characterIcon.sprite = characterInfo.characterIcon;
-        iconBackground = characterIcon.transform.Find("Icon Background").GetComponent<SpriteRenderer>();
-        iconBackground.color = characterInfo.characterColour;
-        iconBorder = characterIcon.transform.Find("Icon Border").GetComponent<SpriteRenderer>();
-        iconItStateOutline = characterIcon.transform.Find("Icon It State Outline").GetComponent<SpriteRenderer>();
-        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
-        if (ITCharacterTracker.ITCharacters.Contains(transform)) {
-            iconItStateOutline.color = Color.red;
-        } else {
-            iconItStateOutline.color = Color.green;
-        }
+        characterTag = GetComponent<CharacterTag>();
+        iconsParent = FindIconsParent();
 
-        int sortingLayerOffset = Random.Range(0, 100) * 4;
-        characterIcon.sortingOrder = sortingLayerOffset + 3;
-        iconBackground.sortingOrder = sortingLayerOffset + 2;
-        iconBorder.sortingOrder = sortingLayerOffset + 1;
-        iconItStateOutline.sortingOrder = sortingLayerOffset;
+        CreateMinimapIcon();
+        ApplyInitialVisuals();
+        AssignSortingOrder();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        characterIcon.transform.position = new Vector3(transform.position.x, minimapIconOffset, transform.position.z);
+        UpdateIconPosition();
+        UpdateRoleColor();
+    }
 
-        if (ITCharacterTracker.ITCharacters.Contains(transform)) {
-            iconItStateOutline.color = Color.red;
-        }
-        else {
-            iconItStateOutline.color = Color.green;
-        }
+    private Transform FindIconsParent()
+    {
+        GameObject iconsRoot = GameObject.FindWithTag("MinimapIcons");
+        return iconsRoot.transform;
+    }
+
+    private void CreateMinimapIcon()
+    {
+        characterIcon = Instantiate(minimapIconPrefab, transform.position, Quaternion.Euler(90f, 0f, 0f), iconsParent);
+        characterIcon.name = $"{name} Character Icon";
+    }
+
+    private void ApplyInitialVisuals()
+    {
+        characterIcon.sprite = characterInfo.characterIcon;
+
+        iconBackground = characterIcon.transform.Find("Icon Background").GetComponent<SpriteRenderer>();
+        iconBackground.color = characterInfo.characterColour;
+
+        iconBorder = characterIcon.transform.Find("Icon Border").GetComponent<SpriteRenderer>();
+        iconRoleOutline = characterIcon.transform.Find("Icon Role Outline").GetComponent<SpriteRenderer>();
+    }
+
+    private void AssignSortingOrder()
+    {
+        int baseOrder = Random.Range(0, 100) * 4;
+        iconRoleOutline.sortingOrder = baseOrder;
+        iconBorder.sortingOrder = baseOrder + 1;
+        iconBackground.sortingOrder = baseOrder + 2;
+        characterIcon.sortingOrder = baseOrder + 3;
+    }
+
+    private void UpdateIconPosition()
+    {
+        Vector3 pos = transform.position;
+        characterIcon.transform.position = new Vector3(pos.x, minimapIconOffset, pos.z);
+    }
+
+    private void UpdateRoleColor()
+    {
+        iconRoleOutline.color = characterTag.IsHunter ? Color.red : Color.green;
     }
 }

@@ -1,49 +1,42 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class CharacterScore : MonoBehaviour
 {
-    public int winTime = 150;
-    public float scorebarMoveSmoothing = 10;
+    public int winCoins = 10;
     public CharacterInfo characterInfo;
-    public Slider scoreBarPrefab;
-    public bool player;
 
-    private float curScore = 0;
-    private ITCharacterTracker itCharacterTracker;
-    private ScoreBarUI scoreBar;
-    private EndGameUI endGameUI;
+    [HideInInspector]
+    public UnityEvent<Transform, float> OnScoreChanged = new UnityEvent<Transform, float>();
+    public static event System.Action<Transform> OnCharacterWon;
 
-    // Start is called before the first frame update
-    void Start()
+    public bool IsPlayer
     {
-        itCharacterTracker = FindFirstObjectByType<ITCharacterTracker>();
-        itCharacterTracker.characterScoreLeft.Add(transform, winTime);
-        Canvas canvas = FindFirstObjectByType<Canvas>();
-        scoreBar = Instantiate(scoreBarPrefab, canvas.transform).GetComponent<ScoreBarUI>();
-        scoreBar.name = name + " Score Bar";
-        scoreBar.SetUp(characterInfo, winTime, player, ITCharacterTracker.ITCharacters.Contains(transform), transform);
-        endGameUI = FindFirstObjectByType<EndGameUI>();
+        get; private set;
     }
 
-    // Update is called once per frame
-    void Update()
+    private CharacterTag characterTag;
+    private float curScore = 0;
+
+    private void Awake()
     {
-        if (!ITCharacterTracker.ITCharacters.Contains(transform)) {
-            curScore += Time.deltaTime;
-            itCharacterTracker.characterScoreLeft[transform] = winTime - curScore;
+        IsPlayer = GetComponent<PlayerInput>() != null;
+        characterTag = GetComponent<CharacterTag>();
+    }
 
-            if (curScore >= winTime) {
-                endGameUI.EndGame(name);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!characterTag.IsHunter && other.CompareTag("Coin"))
+        {
+            curScore++;
+            OnScoreChanged.Invoke(transform, winCoins - curScore);
+            CoinManager.Instance.RandomlyPlaceCoin(other.transform);
+
+            if (curScore >= winCoins)
+            {
+                OnCharacterWon?.Invoke(transform);
             }
-        }
-
-        float timeSmoothing = scorebarMoveSmoothing * Time.deltaTime;
-        bool first = itCharacterTracker.winningCharacter == transform;
-        bool second = itCharacterTracker.secondCharacter == transform;
-        scoreBar.UpdateUI(curScore, ITCharacterTracker.ITCharacters.Contains(transform));
-        if (!player) {
-            scoreBar.Move(first, second, timeSmoothing);
         }
     }
 }

@@ -1,47 +1,54 @@
-using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AIPathfindingNavMesh : MonoBehaviour
 {
     private NavMeshAgent agent;
-    private NavMeshPath currentPath;
-
-    private Vector3 randomDestination;
-    private Vector3 navDirection;
+    private CharacterTag characterTag;
+    private CharacterStateTracker tracker;
+    private CoinManager coinManager;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        currentPath = new NavMeshPath();
-        randomDestination = new Vector3(Random.Range(-15f, 15f), 0, Random.Range(-15f, 15f));
+        characterTag = GetComponent<CharacterTag>();
+
+        tracker = CharacterStateTracker.Instance;
+        coinManager = FindFirstObjectByType<CoinManager>();
     }
 
     void Update()
     {
-        agent.CalculatePath(randomDestination, currentPath);
-        if (currentPath.corners.Length >= 2)
+        if (characterTag.IsHunter)
         {
-            navDirection = currentPath.corners[1] - currentPath.corners[0];
+            agent.SetDestination(tracker.player.position);
         }
-        agent.SetPath(currentPath);
+        else
+        {
+            Transform nearestCoin = GetNearestCoin();
+            if (nearestCoin != null)
+            {
+                agent.SetDestination(nearestCoin.position);
+            }
+        }
     }
 
-    private void OnDrawGizmos()
+    private Transform GetNearestCoin()
     {
-        if (Application.isPlaying)
-        {
-            Gizmos.color = Color.red;
-            for (int i = 0; i < currentPath.corners.Length; i++)
-            {
-                Gizmos.DrawWireSphere(currentPath.corners[i], 0.1f);
-            }
+        float shortestDistance = Mathf.Infinity;
+        Transform closest = null;
+        Vector3 myPos = transform.position;
 
-            Gizmos.color = Color.blue;
-            if (currentPath.corners.Length >= 1)
+        foreach (Transform coin in CoinManager.Instance.ActiveCoins)
+        {
+            float dist = Vector3.Distance(myPos, coin.position);
+            if (dist < shortestDistance)
             {
-                Gizmos.DrawLine(currentPath.corners[0], currentPath.corners[0] + navDirection);
+                shortestDistance = dist;
+                closest = coin;
             }
         }
+
+        return closest;
     }
 }

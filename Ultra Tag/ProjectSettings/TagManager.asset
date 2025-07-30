@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Jump Trigger
   - Agent
   - Hurdle
+  - Coin
+  - MinimapIcons
   layers:
   - Default
   - TransparentFX

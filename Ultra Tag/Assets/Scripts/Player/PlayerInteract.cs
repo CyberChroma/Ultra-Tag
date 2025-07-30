@@ -4,12 +4,12 @@ public class PlayerInteract : MonoBehaviour
 {
     public float interactDistance = 4;
 
-    private CharacterItState characterItState;
+    private CharacterTag characterTag;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        characterItState = GetComponentInParent<CharacterItState>();
+        characterTag = GetComponentInParent<CharacterTag>();
     }
 
     // Update is called once per frame
@@ -22,11 +22,11 @@ public class PlayerInteract : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Agent"))
                 {
-                    // If I'm IT, and agent I'm grabbing is not IT...
-                    if (ITCharacterTracker.ITCharacters.Contains(transform.parent) && !ITCharacterTracker.ITCharacters.Contains(hit.transform)) {
+                    // If I'm a hunter, and agent I'm grabbing is an evader...
+                    if (characterTag.IsHunter && !hit.transform.GetComponentInParent<CharacterTag>().IsHunter!) {
                         // DO THE GRAB
                         print("TAGGED YA!!");
-                        characterItState.AttemptTag(hit.transform);
+                        characterTag.AttemptTag(hit.transform);
                     }
                 }
             }

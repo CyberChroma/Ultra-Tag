@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 6395304716989327134}
   - component: {fileID: 3598499847150367687}
   m_Layer: 7
-  m_Name: Icon It State Outline
+  m_Name: Icon Role Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
