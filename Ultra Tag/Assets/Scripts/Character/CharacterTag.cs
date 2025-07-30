@@ -21,7 +21,6 @@ public class CharacterTag : MonoBehaviour
     private bool canTag;
     private PlayerInput playerInput;
     private AIPathfindingInput aiPathfindingInput;
-    private AITriggerInteractionInput aiTriggerInteractionInput;
     private Animator anim;
 
     public bool IsHunter => role == CharacterRole.Hunter;
@@ -30,7 +29,6 @@ public class CharacterTag : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         aiPathfindingInput = GetComponent<AIPathfindingInput>();
-        aiTriggerInteractionInput = GetComponent<AITriggerInteractionInput>();
         anim = GetComponentInChildren<Animator>();
         canTag = IsHunter;
     }
@@ -66,10 +64,6 @@ public class CharacterTag : MonoBehaviour
         {
             aiPathfindingInput.enabled = false;
         }
-        if (aiTriggerInteractionInput != null)
-        {
-            aiTriggerInteractionInput.enabled = false;
-        }
         anim?.SetBool("IsRunning", false);
     }
 
@@ -83,10 +77,6 @@ public class CharacterTag : MonoBehaviour
         {
             aiPathfindingInput.enabled = true;
         }
-        if (aiTriggerInteractionInput != null)
-        {
-            aiTriggerInteractionInput.enabled = true;
-        }
     }
 
     public void SetRole(CharacterRole newRole)
@@ -99,7 +89,9 @@ public class CharacterTag : MonoBehaviour
     {
         hunter.SetRole(CharacterRole.Evader);
         target.SetRole(CharacterRole.Hunter);
-        target.Stun();
+
+        hunter.canTag = false;
+        target.StartCoroutine(target.Stun());
 
         OnTagged?.Invoke(hunter.transform, target.transform);
     }

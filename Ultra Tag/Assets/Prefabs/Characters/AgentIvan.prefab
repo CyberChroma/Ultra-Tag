@@ -196,6 +196,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactDistance: 4
+  fieldOfViewAngle: 60
+  agentMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &7248782545499995344
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,13 +283,13 @@ GameObject:
   - component: {fileID: 7248782545933340495}
   - component: {fileID: 7248782545933340485}
   - component: {fileID: 7248782545933340483}
+  - component: {fileID: 8920780118855383421}
   - component: {fileID: 7248782545933340484}
   - component: {fileID: 7248782545933340486}
   - component: {fileID: 7248782545933340487}
   - component: {fileID: 1455401386}
-  - component: {fileID: 8920780118855383421}
   - component: {fileID: 624105472}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AgentIvan
   m_TagString: Agent
   m_Icon: {fileID: 0}
@@ -379,6 +383,23 @@ MonoBehaviour:
   moveLeftKey: 97
   moveRightKey: 100
   jumpKey: 32
+--- !u!114 &8920780118855383421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7248782545933340494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 230378c58c8c404458dd1506a6095c3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  role: 1
+  waitToTagTime: 2
+  OnRoleChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7248782545933340484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,27 +457,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33354ac7155c69747b5cdd9efd8c23b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winCoins: 150
+  winCoins: 10
   characterInfo: {fileID: 11400000, guid: 3a24ef129af81004798d23f19b2371d9, type: 2}
-  player: 1
   OnScoreChanged:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &8920780118855383421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7248782545933340494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 230378c58c8c404458dd1506a6095c3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  role: 0
-  waitToTagTime: 2
-  OnRoleChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &624105472
@@ -485,7 +488,7 @@ GameObject:
   - component: {fileID: 6988291437218385912}
   - component: {fileID: 5792736170938825942}
   - component: {fileID: 661360344277463272}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: PlaceholderPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

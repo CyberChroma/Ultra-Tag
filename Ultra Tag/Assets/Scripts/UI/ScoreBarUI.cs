@@ -62,6 +62,7 @@ public class ScoreBarUI : MonoBehaviour
 
     private bool ShouldBeOnScreen(bool isFirst, bool isSecond)
     {
-        return isFirst || (CharacterStateTracker.Instance.player == attachedCharacter && isSecond);
+        Transform player = CharacterStateTracker.Instance.player;
+        return isFirst || (isSecond && CharacterStateTracker.Instance.winningCharacter == player);
     }
 }

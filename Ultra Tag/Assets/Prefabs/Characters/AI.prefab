@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &784473014619636221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4134186899738514498}
+  - component: {fileID: 4001566232638070759}
+  m_Layer: 0
+  m_Name: AIInteract
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4134186899738514498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784473014619636221}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8858746077201450175}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4001566232638070759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784473014619636221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faea543eebf174a41b11d515d6dea498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactDistance: 2
+  fieldOfViewAngle: 60
+  agentMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &1479404457680982997
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,7 +146,7 @@ GameObject:
   - component: {fileID: 3929878318198546225}
   - component: {fileID: 138567639204190528}
   - component: {fileID: 6561660464107732330}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: PlaceholderEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,10 +234,10 @@ GameObject:
   - component: {fileID: 4629802146733775659}
   - component: {fileID: 8858746077201450162}
   - component: {fileID: 2966227922674362295}
-  - component: {fileID: 7061802318851005794}
   - component: {fileID: 5646724810558998988}
+  - component: {fileID: 7061802318851005794}
   - component: {fileID: 9044237425478474867}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AI
   m_TagString: Agent
   m_Icon: {fileID: 0}
@@ -210,6 +259,7 @@ Transform:
   m_Children:
   - {fileID: 1793759210720208585}
   - {fileID: 3929878318198546225}
+  - {fileID: 4134186899738514498}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &4629802146733775659
@@ -269,33 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb456e2e81e4c0e4d9e04c9141019c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coins:
-  - {fileID: 0}
-  - {fileID: 0}
-  player: {fileID: 0}
---- !u!114 &7061802318851005794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8858746077201450163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33354ac7155c69747b5cdd9efd8c23b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  winCoins: 150
-  scorebarMoveSmoothing: 10
-  characterInfo: {fileID: 11400000, guid: bc31b0ca83679f447bc935708a410eca, type: 2}
-  scoreBarPrefab: {fileID: 9200808515534745043, guid: 28bc4d122189f8f4a9f4b049cad6d18a, type: 3}
-  player: 0
-  OnCharacterWon:
-    m_PersistentCalls:
-      m_Calls: []
-  OnScoreChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5646724810558998988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +334,23 @@ MonoBehaviour:
   role: 0
   waitToTagTime: 2
   OnRoleChanged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7061802318851005794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858746077201450163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33354ac7155c69747b5cdd9efd8c23b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  winCoins: 10
+  characterInfo: {fileID: 11400000, guid: bc31b0ca83679f447bc935708a410eca, type: 2}
+  OnScoreChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &9044237425478474867

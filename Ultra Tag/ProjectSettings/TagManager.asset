@@ -8,6 +8,7 @@ TagManager:
   - Hurdle
   - Coin
   - MinimapIcons
+  - Jump Trigger
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Not in Reflection
   - Waypoint
   - Waypoint Blocker
-  - 
+  - Agent
   - 
   - 
   - 

@@ -45,6 +45,9 @@ public class ScoreBarUIManager : MonoBehaviour
             {
                 ui.UpdateUI(score.winCoins - scoreLeft, tag.IsHunter);
             });
+
+            float currentScore = 0f;
+            ui.UpdateUI(currentScore, tag.IsHunter);
         }
     }
 
