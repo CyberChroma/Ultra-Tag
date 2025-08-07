@@ -17,10 +17,14 @@ public class CharacterTag : MonoBehaviour
     [HideInInspector]
     public UnityEvent<CharacterRole> OnRoleChanged = new UnityEvent<CharacterRole>();
     public static event System.Action<Transform, Transform> OnTagged;
+    public static event System.Action<bool> OnPlayerRoleChanged;
 
     private bool canTag;
+    private bool isPlayer;
     private PlayerInput playerInput;
-    private AIPathfindingInput aiPathfindingInput;
+    private AIPathfindingNavMesh aiPathfinding;
+    private PlayerInteract playerInteract;
+    private AIAttemptTag aiAttemptTag;
     private Animator anim;
 
     public bool IsHunter => role == CharacterRole.Hunter;
@@ -28,8 +32,11 @@ public class CharacterTag : MonoBehaviour
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        aiPathfindingInput = GetComponent<AIPathfindingInput>();
+        aiPathfinding = GetComponent<AIPathfindingNavMesh>();
         anim = GetComponentInChildren<Animator>();
+        playerInteract = GetComponentInChildren<PlayerInteract>();
+        aiAttemptTag = GetComponentInChildren<AIAttemptTag>();
+        isPlayer = playerInput != null;
         canTag = IsHunter;
     }
 
@@ -56,26 +63,39 @@ public class CharacterTag : MonoBehaviour
 
     public void DeactivateCharacter()
     {
-        if (playerInput != null)
+        if (isPlayer)
         {
-            playerInput.enabled = false;
+            if (playerInput != null)
+                playerInput.enabled = false;
+            if (playerInteract != null)
+                playerInteract.enabled = false;
         }
-        if (aiPathfindingInput != null)
+        else
         {
-            aiPathfindingInput.enabled = false;
+            if (aiPathfinding != null)
+                aiPathfinding.enabled = false;
+            if (aiAttemptTag != null)
+                aiAttemptTag.enabled = false;
         }
+
         anim?.SetBool("IsRunning", false);
     }
 
     public void ActivateCharacter()
     {
-        if (playerInput != null)
+        if (isPlayer)
         {
-            playerInput.enabled = true;
+            if (playerInput != null)
+                playerInput.enabled = true;
+            if (playerInteract != null)
+                playerInteract.enabled = true;
         }
-        if (aiPathfindingInput != null)
+        else
         {
-            aiPathfindingInput.enabled = true;
+            if (aiPathfinding != null)
+                aiPathfinding.enabled = true;
+            if (aiAttemptTag != null)
+                aiAttemptTag.enabled = true;
         }
     }
 
@@ -83,6 +103,11 @@ public class CharacterTag : MonoBehaviour
     {
         role = newRole;
         OnRoleChanged.Invoke(newRole);
+
+        if (isPlayer)
+        {
+            OnPlayerRoleChanged?.Invoke(IsHunter);
+        }
     }
 
     public static void TagCharacter(CharacterTag hunter, CharacterTag target)

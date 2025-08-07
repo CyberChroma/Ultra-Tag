@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 9051077036732880861}
   - component: {fileID: 3413698635509656152}
   - component: {fileID: 5342091381816213049}
+  - component: {fileID: 6060870644180982667}
   m_Layer: 0
   m_Name: CoinModel
   m_TagString: Coin
@@ -150,7 +151,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e9660bdd83d564740a036f80e5a86e42, type: 2}
+  - {fileID: 2100000, guid: 62525a0a4bb295b44902c5b11364b84a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -187,6 +188,20 @@ MonoBehaviour:
   rotationSpeed: 90
   hoverAmplitude: 0.25
   hoverFrequency: 2
+--- !u!114 &6060870644180982667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5246344890364491135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eed7b67b9d6d1cb45a462efc3ad991bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  evaderMaterial: {fileID: 2100000, guid: 62525a0a4bb295b44902c5b11364b84a, type: 2}
+  hunterMaterial: {fileID: 2100000, guid: ed840784d049d894388c23be268f32e2, type: 2}
 --- !u!1 &5844730389071910363
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +266,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e9660bdd83d564740a036f80e5a86e42, type: 2}
+  - {fileID: 2100000, guid: 62525a0a4bb295b44902c5b11364b84a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

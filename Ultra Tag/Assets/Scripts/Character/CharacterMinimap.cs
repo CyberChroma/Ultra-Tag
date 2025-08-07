@@ -66,6 +66,9 @@ public class CharacterMinimap : MonoBehaviour
     {
         Vector3 pos = transform.position;
         characterIcon.transform.position = new Vector3(pos.x, minimapIconOffset, pos.z);
+        Vector3 targetEuler = characterIcon.transform.eulerAngles;
+        targetEuler.y = transform.eulerAngles.y;
+        characterIcon.transform.eulerAngles = targetEuler;
     }
 
     private void UpdateRoleColor()

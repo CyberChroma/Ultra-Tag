@@ -1,101 +1,68 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    public KeyCode moveForwardKey;
-    public KeyCode moveBackwardKey;
-    public KeyCode moveLeftKey;
-    public KeyCode moveRightKey;
-
-    public KeyCode jumpKey;
-
-    private bool front;
-    private bool back;
-    private bool left;
-    private bool right;
-
-    private float mouseHorizontal;
-    private float mouseVertical;
-
-    private bool jumpDown;
-    private bool jumpHeld;
+    public Key moveForwardKey = Key.W;
+    public Key moveBackwardKey = Key.S;
+    public Key moveLeftKey = Key.A;
+    public Key moveRightKey = Key.D;
+    public Key jumpKey = Key.Space;
+    public Key interactKey = Key.LeftShift;
 
     private CharacterMove characterMove;
     private CharacterTurn characterTurn;
     private CameraTurn cameraTurn;
     private CharacterJump characterJump;
+    private PlayerInteract playerInteract;
 
-    // Start is called before the first frame update
     void Start()
     {
         characterMove = GetComponent<CharacterMove>();
         characterTurn = GetComponent<CharacterTurn>();
         cameraTurn = GetComponentInChildren<CameraTurn>();
         characterJump = GetComponent<CharacterJump>();
+        playerInteract = GetComponentInChildren<PlayerInteract>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        MoveInput();
-        TurnInput();
-        JumpInput();
+        HandleMoveInput();
+        HandleTurnInput();
+        HandleJumpInput();
+        HandleInteractInput();
     }
 
-    void MoveInput()
+    private void HandleMoveInput()
     {
-        if (Keyboard.current[Key.W].isPressed) {
-            front = true;
-        }
-        else {
-            front = false;
-        }
-        if (Keyboard.current[Key.S].isPressed) {
-            back = true;
-        }
-        else {
-            back = false;
-        }
-        if (Keyboard.current[Key.A].isPressed) {
-            left = true;
-        }
-        else {
-            left = false;
-        }
-        if (Keyboard.current[Key.D].isPressed) {
-            right = true;
-        }
-        else {
-            right = false;
-        }
+        bool front = Keyboard.current[moveForwardKey].isPressed;
+        bool back = Keyboard.current[moveBackwardKey].isPressed;
+        bool left = Keyboard.current[moveLeftKey].isPressed;
+        bool right = Keyboard.current[moveRightKey].isPressed;
+
         characterMove.Move(front, back, left, right);
     }
 
-    void TurnInput()
+    private void HandleTurnInput()
     {
-        mouseHorizontal = Input.GetAxis("Mouse X");
-        mouseVertical = -Input.GetAxis("Mouse Y");
+        float mouseHorizontal = Input.GetAxis("Mouse X");
+        float mouseVertical = -Input.GetAxis("Mouse Y");
+
         characterTurn.Turn(mouseHorizontal);
         cameraTurn.Turn(mouseVertical);
     }
 
-    void JumpInput()
+    private void HandleJumpInput()
     {
-        if (Keyboard.current[Key.Space].wasPressedThisFrame) {
-            jumpDown = true;
-        }
-        else {
-            jumpDown = false;
-        }
-        if (Keyboard.current[Key.Space].isPressed) {
-            jumpHeld = true;
-        }
-        else {
-            jumpHeld = false;
-        }
+        bool jumpDown = Keyboard.current[jumpKey].wasPressedThisFrame;
+        bool jumpHeld = Keyboard.current[jumpKey].isPressed;
+
         characterJump.Jump(jumpDown, jumpHeld);
+    }
+
+    private void HandleInteractInput()
+    {
+        bool interactDown = Keyboard.current[interactKey].wasPressedThisFrame;
+        playerInteract.TryInteract(interactDown);
     }
 }

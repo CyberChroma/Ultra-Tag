@@ -20,6 +20,6 @@ public class CoinSpinAndHover : MonoBehaviour
 
         // Hover relative to parent
         float hoverOffset = Mathf.Sin(Time.time * hoverFrequency) * hoverAmplitude;
-        transform.localPosition = baseLocalPosition + Vector3.up * hoverOffset;
+        transform.localPosition = baseLocalPosition + -Vector3.forward * hoverOffset;
     }
 }

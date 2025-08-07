@@ -5,8 +5,10 @@ public class PlayerInteract : MonoBehaviour
     public float interactDistance = 4f;
     public float fieldOfViewAngle = 60f;
     public LayerMask agentMask;
+    public int holdTagFrames = 20;
 
     private CharacterTag characterTag;
+    private int tagHoldFrameCounter = 0;
 
     private void Start()
     {
@@ -15,12 +17,23 @@ public class PlayerInteract : MonoBehaviour
 
     private void Update()
     {
+        // Only attempt tag if we're still in the "held" frame window
+        if (tagHoldFrameCounter > 0)
+        {
+            TryTagNearbyAgent();
+            tagHoldFrameCounter--;
+        }
+    }
+
+    // Called by PlayerInput
+    public void TryInteract(bool inputPressed)
+    {
         if (!characterTag.IsHunter)
             return;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (inputPressed)
         {
-            TryTagNearbyAgent();
+            tagHoldFrameCounter = holdTagFrames;
         }
     }
 
@@ -52,11 +65,11 @@ public class PlayerInteract : MonoBehaviour
                 if (hit.transform == other || hit.transform.root == other)
                 {
                     characterTag.AttemptTag(other);
+                    tagHoldFrameCounter = 0; // stop retrying once successful
                     break;
                 }
             }
         }
-
     }
 
     private void OnDrawGizmosSelected()

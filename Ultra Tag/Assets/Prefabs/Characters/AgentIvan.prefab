@@ -200,6 +200,7 @@ MonoBehaviour:
   agentMask:
     serializedVersion: 2
     m_Bits: 4096
+  holdTagFrames: 5
 --- !u!1 &7248782545499995344
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,11 +379,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58e6e2928e99d247ad37183d1f44bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForwardKey: 119
-  moveBackwardKey: 115
-  moveLeftKey: 97
-  moveRightKey: 100
-  jumpKey: 32
+  moveForwardKey: 37
+  moveBackwardKey: 33
+  moveLeftKey: 15
+  moveRightKey: 18
+  jumpKey: 1
+  interactKey: 51
 --- !u!114 &8920780118855383421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 230378c58c8c404458dd1506a6095c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  role: 1
+  role: 0
   waitToTagTime: 2
   OnRoleChanged:
     m_PersistentCalls:

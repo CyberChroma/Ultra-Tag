@@ -1,55 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMove : MonoBehaviour
 {
-    public float moveSpeed;
+    public float moveSpeed = 2;
 
     private int fbDir = 0;
     private int lrDir = 0;
     private Rigidbody rb;
     private Animator anim;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        rb.AddRelativeForce(new Vector3(lrDir, 0, fbDir) * moveSpeed, ForceMode.Impulse);
+        Vector3 movement = new Vector3(lrDir, 0, fbDir) * moveSpeed;
+        rb.AddRelativeForce(movement, ForceMode.Impulse);
+
         fbDir = 0;
         lrDir = 0;
-        if (rb.linearVelocity.magnitude <= 1) {
+
+        if (rb.linearVelocity.magnitude <= 1f)
+        {
             anim?.SetBool("IsRunning", false);
         }
-        else {
+        else
+        {
             anim?.SetBool("IsRunning", true);
         }
     }
 
     public void Move(bool inputFront, bool inputBack, bool inputLeft, bool inputRight)
     {
-        if (inputBack) {
-            fbDir = -1;
-        } else if (inputFront) {
-            fbDir = 1;
-        } else {
-            fbDir = 0;
-        }
-
-        if (inputLeft) {
-            lrDir = -1;
-        }
-        else if (inputRight) {
-            lrDir = 1;
-        }
-        else {
-            lrDir = 0;
-        }
+        fbDir = inputBack ? -1 : (inputFront ? 1 : 0);
+        lrDir = inputLeft ? -1 : (inputRight ? 1 : 0);
     }
 }

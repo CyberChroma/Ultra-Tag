@@ -1,21 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraTurn : MonoBehaviour
 {
-    public float turnSpeed;
+    public float turnSpeed = 1f;
 
     public void Turn(float vertical)
     {
-        transform.Rotate(new Vector3(vertical, 0, 0) * turnSpeed * 500 * Time.deltaTime);
-        float clampedRot = transform.rotation.eulerAngles.x;
-        if (clampedRot > 180) {
-            clampedRot = Mathf.Clamp(clampedRot, 280, 360);
+        return;
+        float rotationAmount = vertical * turnSpeed * 500f * Time.deltaTime;
+        transform.Rotate(Vector3.right * rotationAmount);
+
+        float xAngle = transform.localEulerAngles.x;
+
+        // Clamp between 0–80 (looking up) and 280–360 (looking down past 360 wrap)
+        if (xAngle > 180f)
+        {
+            xAngle = Mathf.Clamp(xAngle, 280f, 360f);
         }
-        else {
-            clampedRot = Mathf.Clamp(clampedRot, 0, 80);
+        else
+        {
+            xAngle = Mathf.Clamp(xAngle, 0f, 80f);
         }
-        transform.localRotation = Quaternion.Euler(clampedRot, 0, 0);
+
+        transform.localRotation = Quaternion.Euler(xAngle, 0f, 0f);
     }
 }

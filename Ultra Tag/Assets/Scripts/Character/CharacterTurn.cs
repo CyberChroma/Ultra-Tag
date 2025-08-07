@@ -1,30 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterTurn : MonoBehaviour
 {
-    public float turnSpeed;
+    public float turnSpeed = 8f;
 
-    private float horizontal = 0;
+    private float horizontalInput = 0f;
     private Rigidbody rb;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        rb.AddTorque(new Vector3(0, horizontal, 0) * turnSpeed);
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-        horizontal = 0;
+        if (horizontalInput != 0f)
+        {
+            rb.AddTorque(Vector3.up * horizontalInput * turnSpeed);
+        }
+
+        Vector3 rotation = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+        horizontalInput = 0f;
     }
 
     public void Turn(float inputHorizontal)
     {
-        horizontal = inputHorizontal;
+        horizontalInput = inputHorizontal;
     }
 }
